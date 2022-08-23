@@ -1,7 +1,7 @@
 package com.example.demo.myShop;
 
 import com.example.demo.myShop.exception.BadRequestException;
-import com.example.demo.myShop.exception.UserNotFoundException;
+import com.example.demo.myShop.exception.ShopNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,9 +27,9 @@ public class ShopController {
             Shop newShop = shopService.createShop(shop);
 
             return new ResponseEntity<>("Created success " + newShop, HttpStatus.CREATED);
-        } catch (BadRequestException e) {
+        } catch (BadRequestException exception) {
 
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             System.err.println(e.getMessage());
             return new ResponseEntity<>("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR);
@@ -41,48 +41,41 @@ public class ShopController {
         return shopService.getShops();
     }
 
-    @GetMapping("/findById{id}")
-    public ResponseEntity<String> findShopById(@PathVariable("id") long id) throws UserNotFoundException {
+    @GetMapping("/findById/{id}")
+    public ResponseEntity<String> findShopById(@PathVariable("id") long id) throws ShopNotFoundException {
         try {
             Shop shop = shopService.findById(id);
 
-            return new ResponseEntity<>(shop.toString(), HttpStatus.FOUND);
-        } catch (UserNotFoundException e) {
+            return new ResponseEntity<>(shop.toString(), HttpStatus.OK);
+        } catch (ShopNotFoundException exception) {
 
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            return new ResponseEntity<>("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
-    @DeleteMapping("/delete{id}")
-    public ResponseEntity<String> delShopById(@PathVariable("id") long id) throws UserNotFoundException {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> delShopById(@PathVariable("id") long id) throws ShopNotFoundException {
         try {
             shopService.delete(id);
 
             return new ResponseEntity<>("Delete success", HttpStatus.OK);
-        } catch (UserNotFoundException e) {
+        } catch (ShopNotFoundException exception) {
 
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            return new ResponseEntity<>("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
 
     @PutMapping(value = "/update", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody
-    ResponseEntity<String> update(@RequestBody Shop shop) {
+    public ResponseEntity<String> updateShop(@RequestBody Shop shop) {
         try {
             Shop shopUpdate = shopService.update(shop);
 
             return new ResponseEntity<>("Update success" + shopUpdate, HttpStatus.OK);
-        } catch (UserNotFoundException e) {
+        } catch (ShopNotFoundException exception) {
 
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
+            return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception exception) {
+            System.err.println(exception.getMessage());
             return new ResponseEntity<>("Something went wrong", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
