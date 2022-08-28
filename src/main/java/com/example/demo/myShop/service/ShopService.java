@@ -1,7 +1,8 @@
-package com.example.demo.myShop;
+package com.example.demo.myShop.service;
 
-import com.example.demo.myShop.exception.BadRequestException;
+import com.example.demo.myShop.exception.ShopExistException;
 import com.example.demo.myShop.exception.ShopNotFoundException;
+import com.example.demo.myShop.model.Shop;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -11,9 +12,9 @@ public class ShopService {
 
     private final ArrayList<Shop> dataBaseShops = new ArrayList<>();
 
-    public Shop createShop(Shop shop) throws BadRequestException {
+    public Shop createShop(Shop shop) throws ShopExistException {
         if (dataBaseShops.contains(shop)) {
-            throw new BadRequestException(" User with id: " + shop.getId() + " already exist");
+            throw new ShopExistException("Shop with id: " + shop.getId() + " already exist");
         }
         dataBaseShops.add(shop);
         return shop;
@@ -25,7 +26,7 @@ public class ShopService {
                 return shop;
             }
         }
-        throw new ShopNotFoundException("User with id " + id + " no found");
+        throw new ShopNotFoundException("Shop with id: " + id + " not found");
     }
 
     public void delete(long id) throws ShopNotFoundException {
@@ -36,13 +37,13 @@ public class ShopService {
         return dataBaseShops;
     }
 
-    public Shop update(Shop shop) throws ShopNotFoundException {
-        for (Shop shop1 : dataBaseShops) {
-            if (shop1.getId() == shop.getId()) {
-                shop1 = shop;
-                return shop1;
+    public Shop update(Shop shopToUpdate) throws ShopNotFoundException {
+        for (Shop shop : dataBaseShops) {
+            if (shop.getId() == shopToUpdate.getId()) {
+                shop = shopToUpdate;
+                return shop;
             }
         }
-        throw new ShopNotFoundException(" User with id: " + shop.getId() + " no found");
+        throw new ShopNotFoundException("Shop with id : " + shopToUpdate.getId() + " not found");
     }
 }

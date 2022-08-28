@@ -1,7 +1,9 @@
-package com.example.demo.myShop;
+package com.example.demo.myShop.controller;
 
-import com.example.demo.myShop.exception.BadRequestException;
+import com.example.demo.myShop.service.ShopService;
+import com.example.demo.myShop.exception.ShopExistException;
 import com.example.demo.myShop.exception.ShopNotFoundException;
+import com.example.demo.myShop.model.Shop;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,7 +29,7 @@ public class ShopController {
             Shop newShop = shopService.createShop(shop);
 
             return new ResponseEntity<>("Created success " + newShop, HttpStatus.CREATED);
-        } catch (BadRequestException exception) {
+        } catch (ShopExistException exception) {
 
             return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {

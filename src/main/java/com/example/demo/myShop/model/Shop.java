@@ -1,4 +1,4 @@
-package com.example.demo.myShop;
+package com.example.demo.myShop.model;
 
 public class Shop {
     private long id;
@@ -65,15 +65,4 @@ public class Shop {
         isHasSite = hasSite;
     }
 
-    @Override
-    public String toString() {
-        return "Shop{" +
-                "id=" + id +
-                ", city='" + city + '\'' +
-                ", street='" + street + '\'' +
-                ", name='" + name + '\'' +
-                ", numberOfStaff=" + numberOfStaff +
-                ", isHasSite=" + isHasSite +
-                '}';
-    }
 }
