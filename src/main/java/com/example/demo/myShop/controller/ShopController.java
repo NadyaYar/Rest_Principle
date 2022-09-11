@@ -1,5 +1,6 @@
 package com.example.demo.myShop.controller;
 
+import com.example.demo.myShop.dto.ShopDto;
 import com.example.demo.myShop.service.ShopService;
 import com.example.demo.myShop.exception.ShopNotFoundException;
 import com.example.demo.myShop.model.Shop;
@@ -34,8 +35,21 @@ public class ShopController {
     }
 
     @SneakyThrows
-    @GetMapping("/getAllShops")
-    public void getShops(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse) {
+    @PostMapping(value = "/createShopDto")
+    public ShopDto createShopDto(HttpServletRequest httpServletRequest) {
+
+
+        BufferedReader bufferedReader = httpServletRequest.getReader();
+        String shopJson = bufferedReader.lines().collect(Collectors.joining());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        ShopDto shopDto = objectMapper.readValue(shopJson, ShopDto.class);
+        return shopService.createShopDto(shopDto);
+    }
+
+    @SneakyThrows
+    @GetMapping(value = "/getAllShops")
+    public void getShops(HttpServletResponse httpServletResponse) {
         PrintWriter writer = httpServletResponse.getWriter();
         shopService.getShops().forEach(e -> writer.println(e.toString()));
         writer.flush();

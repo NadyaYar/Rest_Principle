@@ -26,9 +26,9 @@ public class Shop {
 
     private int numberOfStaff;
 
-    private boolean isHasSite;
+    private Boolean isHasSite;
 
-    public Shop(String city, String street, String name, int numberOfStaff, boolean isHasSite) {
+    public Shop(String city, String street, String name, int numberOfStaff, Boolean isHasSite) {
         this.city = city;
         this.street = street;
         this.name = name;
