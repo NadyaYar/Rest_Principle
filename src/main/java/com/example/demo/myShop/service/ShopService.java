@@ -64,7 +64,7 @@ public class ShopService {
         return shop;
     }
 
-    public void isExists(long id) throws ShopNotFoundException {
+    private void isExists(long id) throws ShopNotFoundException {
         boolean isExists = shopRepository.existsById(id);
         if (!isExists) {
             throw new ShopNotFoundException("Shop with id: " + id + " not found");
